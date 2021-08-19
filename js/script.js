@@ -18,6 +18,7 @@ const playAgainButton = document.querySelector(".play-again");
 const word = "magnolia";
 
 const guessedLetters = [];
+let remainingGuesses = 8;
 
 
 // Display circles as placeholders for the chosen word's letters
@@ -66,6 +67,7 @@ const makeGuess = function (guess) {
 	} else {
 		guessedLetters.push(guess);
 		console.log (guessedLetters);
+		countRemainingGuesses(guess);
 		showGuessedLetters();
 		updateWordInProgress(guessedLetters);
 	}
@@ -80,6 +82,7 @@ const showGuessedLetters = function (){
 		guessedLettersList.append(guessedLetter);
 	}
 };
+
 
 // update word in progress
 const updateWordInProgress = function (guessedLetters) {
@@ -97,6 +100,25 @@ const updateWordInProgress = function (guessedLetters) {
 	checkIfWin();
 };
 
+// tally remaining guesses
+const countRemainingGuesses = function (guess) {
+	const upperWord = word.toUpperCase();
+	if (!upperWord.includes(guess)){
+		remainingGuesses -= 1;
+		message.innerText="Nope! Try again.";
+	} else {
+		message.innerText = "You got it!";
+	}
+
+	if (reaminingGuesses === 0) {
+		message.innerHTML= `Sorry, you lose! The word was <span class="highlight">${word}</span>.`;
+	} else if (remainingGuesses === 1) {
+		remainingGuessesSpan.innerText = "1 guess"; 
+	} else {
+		remainingGuessesSpan.innerText = "${remainingGuesses} guesses";
+	}
+};
+
 // did the player win?
 const checkIfWin = function (){
 	if (word.toUpperCase() === wordInProgress.innerText) {
@@ -105,3 +127,4 @@ const checkIfWin = function (){
 
 	}
 };
+
